@@ -37,7 +37,7 @@ git clone https://github.com/rezocrypt/MazeAI
 cd MazeAI 
 ```
 
-6. Run the project with opening it in any browser.
+6. Run the project with opening index.html in any browser.
 
 
 # Usage
