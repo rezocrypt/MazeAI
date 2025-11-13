@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>ResoMazeAI</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+                crossorigin="anonymous" />
+</head>
+
+<body>
+        <br />
+        <p class="text-center display-4" id="heading">Reso Maze AI</p>
+        <div id="container">
+                <!-- Canvas div -->
+                <div id="canvas-div">
+                        <canvas id="canvas"></canvas>
+                </div>
+
+                <div id="right-menu">
+                        <!-- Buttons div -->
+                        <div id="buttons-div" class="btn-group" role="group" aria-label="Basic example">
+                                <button onclick=" new_labyrinth_button()" class="control-button btn btn-warning">
+                                        New maze
+                                </button>
+                                <button onclick=" reset_labyrinth()" class="control-button btn btn-warning">
+                                        Reset maze
+                                </button>
+                                <button onclick="one_step_button()" class="control-button btn btn-warning">
+                                        Step
+                                </button>
+                                <button onclick="one_try_button()" class="control-button btn btn-warning">
+                                        Try
+                                </button>
+                                <button onclick="learn_button()" class="control-button btn btn-warning">
+                                        Learn
+                                </button>
+                        </div>
+
+                        <div id="weights">
+                                <table class="table table-striped">
+                                        <thead>
+                                                <tr>
+                                                        <th scope="col">
+                                                                Distance
+                                                                weight
+                                                        </th>
+                                                        <th scope="col">
+                                                                Step-count
+                                                                weight
+                                                        </th>
+                                                        <th scope="col">
+                                                                Valid-steps
+                                                                weight
+                                                        </th>
+                                                        <th scope="col">
+                                                                Points
+                                                        </th>
+                                                </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td id="dw"></td>
+                                                        <td id="scw"></td>
+                                                        <td id="vsw"></td>
+                                                        <td id="pi"></td>
+                                                </tr>
+                                        </tbody>
+                                </table>
+                        </div>
+                </div>
+        </div>
+        <style>
+                #powered-by-resonance-p {
+                        font-size: 30px;
+                        font-family: Arial, Helvetica, sans-serif !important;
+                        display: block;
+                        margin-top: 1% !important;
+                        text-align: center;
+                        line-height: 100px;
+                        height: 100px;
+                        text-transform: uppercase;
+                        letter-spacing: 10px-webkit-transition:font-size .5s ease;
+                        -moz-transition: font-size .5s ease;
+                        -o-transition: font-size .5s ease;
+                        transition: font-size .5s ease
+                }
+
+                #powered-by-resonance-p:hover {
+                        font-size: 40px;
+                }
+
+                #powered-by-resonance-a {
+                        text-decoration: none !important;
+                        color: white;
+                }
+
+                #powered-by-resonance-a:hover {
+                        -webkit-transform: scale(1.9);
+                }
+
+                #powered-by-resonance-div {
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        margin: auto;
+                }
+        </style>
+        <div id="powered-by-resonance-div">
+                <a target="blank" id="powered-by-resonance-a" href="https://github.com/rezocrypt">
+                        <p id="powered-by-resonance-p">
+                                POWERED BY RESONANCE
+                        </p>
+                </a>
+        </div>
+        <script>
+                function rand(min, max) {
+                        return (
+                                Math.floor(
+                                        Math.random() * (max - min + 1),
+                                ) + min
+                        );
+                }
+                function getRandomLetter() {
+                        var alphabet = [
+                                'a',
+                                'b',
+                                'c',
+                                'd',
+                                'e',
+                                'f',
+                                'g',
+                                'h',
+                                'i',
+                                'j',
+                                'k',
+                                'l',
+                                'm',
+                                'n',
+                                'o',
+                                'p',
+                                'q',
+                                'r',
+                                's',
+                                't',
+                                'u',
+                                'v',
+                                'w',
+                                'x',
+                                'y',
+                                'z',
+                        ];
+                        return alphabet[rand(0, alphabet.length - 1)];
+                }
+                function getRandomWord(word) {
+                        var text = word.innerHTML;
+                        var finalWord = '';
+                        for (var i = 0; i < text.length; i++) {
+                                finalWord +=
+                                        text[i] == ' '
+                                                ? ' '
+                                                : getRandomLetter();
+                        }
+                        return finalWord;
+                }
+                var word = document.getElementById(
+                        'powered-by-resonance-p',
+                );
+                var interv = 'undefined';
+                var canChange = false;
+                var globalCount = 0;
+                var count = 0;
+                var INITIAL_WORD = word.innerHTML;
+                var isGoing = false;
+                function init() {
+                        if (isGoing) return;
+                        isGoing = true;
+                        var randomWord = getRandomWord(word);
+                        word.innerHTML = randomWord;
+                        interv = setInterval(function () {
+                                var finalWord = '';
+                                for (
+                                        var x = 0;
+                                        x < INITIAL_WORD.length;
+                                        x++
+                                ) {
+                                        if (x <= count && canChange) {
+                                                finalWord +=
+                                                        INITIAL_WORD[x];
+                                        } else {
+                                                finalWord +=
+                                                        getRandomLetter();
+                                        }
+                                }
+                                word.innerHTML = finalWord;
+                                if (canChange) {
+                                        count++;
+                                }
+                                if (globalCount >= 20) {
+                                        canChange = true;
+                                }
+                                if (count >= INITIAL_WORD.length) {
+                                        clearInterval(interv);
+                                        count = 0;
+                                        canChange = false;
+                                        globalCount = 0;
+                                        isGoing = false;
+                                }
+                                globalCount++;
+                        }, 50);
+                }
+                word.addEventListener('mouseenter', init);
+        </script>
+
+        <script src="script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+</body>
+
+</html>
