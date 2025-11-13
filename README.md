@@ -54,7 +54,7 @@ Below buttons are weights which describe by neural network (I just tried some ra
 
 # License
 
-ProjecT codebase is licensed under GNU 3.0 license. Please refer to the LICENSE.txt file for detailed information.
+MazeAI codebase is licensed under GNU GPLv3 license. Please refer to the LICENSE.txt file for detailed information.
 
 
 # Contributing
