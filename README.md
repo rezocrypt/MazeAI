@@ -4,6 +4,7 @@ This is a very simple neural-network perceptron that attempts to solve a maze. I
 
 
 **Created in:** 2023
+
 **Test:** - [Website](https://rezocrypt.github.io/MazeAI/)
 
 
