@@ -1,8 +1,3 @@
-# Open online 
-
-https://rezocrypt.github.io/MazeAI/
-
-
 # MazeAI 
 
 This is a very simple neural-network perceptron that attempts to solve a maze. It is fully client-side, monotonic, and requires no server; everything runs in the browser. The project is intentionally small and minimal, created to demonstrate the basic principles of AI.
@@ -11,7 +6,7 @@ This is a very simple neural-network perceptron that attempts to solve a maze. I
 
 ## Project Resources
 
-- [Website]()
+- [Website](https://rezocrypt.github.io/MazeAI/)
 - [Github Repo](https://rezocrypt.github.io/MazeAI/)
 
 
